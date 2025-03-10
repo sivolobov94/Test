@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакты компании</title>
+    <style>
+        .phone-number {
+            font-weight: bold;
+            color: #0077cc;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <p>Телефон для вашего города: <span class="phone-number">8-800-DIGITS</span></p>
+</header>
+
+<main>
+    <h1>Контактная информация</h1>
+    <p>Здесь можно указать адреса офисов, email и прочую контактную информацию.</p>
+</main>
+
+<footer>
+    <p>Свяжитесь с нами: <span class="phone-number">8-800-DIGITS</span></p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const phoneMapping = {
+            "Moscow": "8-495-123-4567",
+            "Novosibirsk": "8-383-345-6789",
+            "Ekaterinburg": "8-343-456-7890"
+        };
+
+        fetch('https://ipinfo.io/json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка сети');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const city = data.city;
+                const localPhone = phoneMapping[city] || "8-800-DIGITS";
+
+                document.querySelectorAll('.phone-number').forEach(el => {
+                    el.textContent = localPhone;
+                });
+            })
+            .catch(error => {
+                console.error("Ошибка при определении города:", error);
+            });
+    });
+</script>
+</body>
+</html>
